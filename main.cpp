@@ -2,9 +2,17 @@
 
 int main() 
 {
-    Game* g = new Game();    
+	initscr();
+    cbreak();
+    noecho();
+    curs_set(0);
+    nodelay(stdscr, TRUE);
+    keypad(stdscr, TRUE);
+    
+    Game g;
+    g.start();
+    
+	endwin();
 
-
-    delete g;    
     return 0;
 }

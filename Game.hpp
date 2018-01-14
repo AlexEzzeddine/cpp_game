@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <string>
+#include "Player.hpp"
 #define FRAMES_PER_SECOND 60
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAMES_PER_SECOND)
 #define MAX_ENEMIES 10
@@ -11,12 +12,12 @@
 class Game
 {
     private:
-        WINDOW*     _win;
-        bool        _finished;
-        int         _maxHei;
-        int         _maxWid;
-        int         _fps;
-        // Player*      _p1;
+        WINDOW*     win;
+        bool        finished;
+        int         cols;
+        int         rows;
+        int         fps;
+        Player      player;
         // Enemy        _enemies[MAX_ENEMIES];
 
     public:
@@ -28,7 +29,7 @@ class Game
         void    handleInput(char c);
         void    drawEntities();
         void    moveEntities();
-        void    startLoop();
+        void    start();
         void    draw();
         void    handleKeyPress(int c);
 };

@@ -5,7 +5,7 @@ Point::Point(): x(0), y(0)
 	return;
 }
 
-Point::Point(Point &point)
+Point::Point(Point const& point)
 {
 	*this = point;
 	return;
@@ -56,5 +56,5 @@ Point& Point::operator=(Point const& point)
 
 bool Point::operator==(Point const& point) const
 {
-	return (this->x == point.x && this->y == point.y)
+	return (this->x == point.x && this->y == point.y);
 }

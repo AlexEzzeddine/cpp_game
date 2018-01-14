@@ -8,7 +8,7 @@ class Point
 		int y;
 	public:
 		Point();
-		Point(Point &point);
+		Point(Point const& point);
 		Point(int x, int y);
 		~Point();
 		
@@ -20,6 +20,6 @@ class Point
 
 		Point& operator=(Point const& point);
 		bool operator==(Point const& point) const;
-}
+};
 
 #endif

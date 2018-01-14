@@ -1,6 +1,8 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
 
+#include "Bullets.hpp"
+
 #define MAX_BULLETS 10
 
 class Character
@@ -11,6 +13,6 @@ class Character
 		Character();
 		void shoot();
 		void updateBulletsState();
-}
+};
 
 #endif

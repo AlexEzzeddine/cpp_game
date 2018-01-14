@@ -1,6 +1,22 @@
 #include "Entity.hpp"
 
-Entity::Entity(Point const& pos, char const symbol);
+Entity::Entity(Point const& pos, char const symbol):
+	pos(pos), symbol(symbol)
+{
+	return;
+}
+
+Entity::Entity(Entity const& entity):
+	pos(entity.pos), symbol(entity.symbol)
+{
+	return;
+}
+
+Entity& Entity::operator=(Entity const& entity)
+{
+	this->pos = entity.pos;
+	return *this;
+}
 
 // moves Entity to absolute position on the screen
 void Entity::move(int x, int y)
@@ -17,33 +33,33 @@ void Entity::move(Point const& point)
 // moves Entity one position up
 void Entity::moveUp()
 {
-	move(pos.x, pos.y + 1)
+	move(pos.getX(), pos.getY() - 1);
 }
 
 
 // moves Entity one position right
 void Entity::moveRight()
 {
-	move(pos.x + 1, pos.y)
+	move(pos.getX() + 1, pos.getY());
 }
 
 
 // moves Entity one position down
 void Entity::moveDown()
 {
-	move(pos.x, pos.y - 1)
+	move(pos.getX(), pos.getY() + 1);
 }
 
 
 // moves Entity one position left
 void Entity::moveLeft()
 {
-	move(pos.x - 1, pos.y)
+	move(pos.getX() - 1, pos.getY());
 }
 
 
 // retrieves current position
-Point& Entity::getPos() const
+Point const& Entity::getPos() const
 {
 	return pos;
 }
@@ -51,7 +67,7 @@ Point& Entity::getPos() const
 //draws entity on the screen at current position (maybe move this method to other class?)
 void Entity::draw()
 {
-    mvprintw(y, x, "%c", symbol); //show Entity character on the screen
+    mvprintw(pos.getY(), pos.getX(), "%c", symbol); //show Entity character on the screen
 }
 
 
