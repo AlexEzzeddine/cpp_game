@@ -2,9 +2,8 @@
 
 int main() 
 {
-    Game* g = new Game();    
+    Game g;    
 
 
-    delete g;    
     return 0;
 }

@@ -23,6 +23,6 @@ class Entity
 		void draw(); //draws entity on the screen at current position (maybe move this method to other class?)
 
 		bool checkCollision(Entity const& entity) const; // checks if this entity collides with other entity
-}
+};
 
 #endif
