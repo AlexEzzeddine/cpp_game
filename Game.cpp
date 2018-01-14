@@ -75,8 +75,8 @@ void    Game::startLoop() {
 }
 
 void    Game::drawEntities() {
-    // this->_p1->draw();
-    // this->_p1->drawBullets();
+    // this->_p1.draw();
+    // this->_p1.drawBullets();
     // for (int i = 0; i < MAX_ENEMIES; i++) {
     //     this->_enemies[i].draw();
     //     this->_enemies[i].drawBullets();
@@ -84,7 +84,7 @@ void    Game::drawEntities() {
 }
 
 void    Game::moveEntities() {
-    // this->_p1->moveBullets();
+    // this->_p1.moveBullets();
     // for (int i = 0; i < MAX_ENEMIES; i++) {
     //     this->_enemies[i].move();
     //     this->_enemies[i].moveBullets();
@@ -94,19 +94,19 @@ void    Game::moveEntities() {
 void    Game::handleKeyPress(int c) {
     switch(c) {
         case KEY_LEFT:
-            // this->_p1->moveLeft();
+            // this->_p1.moveLeft();
             break;
         case KEY_RIGHT:
-            // this->_p1->moveRight();
+            // this->_p1.moveRight();
             break;
         case KEY_UP:
-            // this->_p1->moveUp();
+            // this->_p1.moveUp();
             break;
         case KEY_DOWN:
-            // this->_p1->moveDown();
+            // this->_p1.moveDown();
             break;
         case 90: // 'z'
-            // this->_p1->shoot();
+            // this->_p1.shoot();
             break;
         case 27: // exit on 'esc' for now
             this->_finished = true;

@@ -11,6 +11,6 @@ class Character
 		Character();
 		void shoot();
 		void updateBulletsState();
-}
+};
 
 #endif
