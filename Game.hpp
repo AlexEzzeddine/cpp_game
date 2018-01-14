@@ -15,6 +15,7 @@ class Game
         bool        _finished;
         int         _maxHei;
         int         _maxWid;
+        int         _fps;
         // Player*      _p1;
         // Enemy        _enemies[MAX_ENEMIES];
 
