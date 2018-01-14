@@ -2,11 +2,16 @@
 
 Game::Game() {
 	getmaxyx(stdscr, this->rows, this->cols);
+	this->enemies = new Enemy*[MAX_ENEMIES];
+	for (int i = 0; i < MAX_ENEMIES; i++)
+		this->enemies[i] = new Enemy();
 	this->draw();
-
 	std::srand(std::time(0));
 	this->finished = false;
 	this->fps = 60;
+	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
+	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
+	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
 }
 
 Game::Game(Game const& obj)
@@ -16,17 +21,10 @@ Game::Game(Game const& obj)
 
 Game::~Game()
 {
+	for(int i = 0; i < MAX_ENEMIES; i++)
+		delete enemies[i];
+	delete [] enemies;
 	return;
-}
-
-void Game::draw() {
-	clear();
-	getmaxyx(stdscr, cols, rows);
-
-	box(stdscr, 0, 0);
-	mvprintw(this->rows, 5, "FPS: %d", this->fps); //display frames
-	this->drawEntities();
-	refresh();
 }
 
 void Game::start()
@@ -62,21 +60,32 @@ void Game::start()
 	}
 }
 
+void Game::draw() {
+	clear();
+	getmaxyx(stdscr, rows, cols);
+
+	box(stdscr, 0, 0);
+	mvprintw(this->rows - 1, 5, "FPS: %d", this->fps); //display frames
+	mvprintw(this->rows - 1, 50, "ROWS: %d COLS: %d", rows, cols); //display frames
+	this->drawEntities();
+	refresh();
+}
+
 void    Game::drawEntities() {
 	this->player.draw();
-	// this->_p1->drawBullets();
-	// for (int i = 0; i < MAX_ENEMIES; i++) {
-	//     this->_enemies[i].draw();
+	this->player.drawBullets();
+	for (int i = 0; i < MAX_ENEMIES; i++)
+		if (enemies[i]->isDisplayed())
+			enemies[i]->draw();
 	//     this->_enemies[i].drawBullets();
-	// }
 }
 
 void    Game::moveEntities() {
-	// this->_p1->moveBullets();
-	// for (int i = 0; i < MAX_ENEMIES; i++) {
-	//     this->_enemies[i].move();
-	//     this->_enemies[i].moveBullets();
-	// }
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		enemies[i]->move();
+		//this->_enemies[i].moveBullets();
+	}
+	this->player.moveBullets((Entity **)enemies, MAX_ENEMIES);
 }
 
 void    Game::handleKeyPress(int c) {
@@ -94,7 +103,7 @@ void    Game::handleKeyPress(int c) {
 			this->player.moveDown();
 			break;
 		case ' ': // 'z'
-			//this->_player.shoot();
+			this->player.shoot(player.getPos());
 			break;
 		case 27: // exit on 'esc' for now
 			this->finished = true;

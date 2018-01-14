@@ -1,18 +1,20 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
 
-#include "Bullets.hpp"
-
-#define MAX_BULLETS 10
+#include "Bullet.hpp"
 
 class Character
 {
 	private:
-		Bullets bullets[MAX_BULLETS];
-	public:
+		Bullet **bullets;
+		int numberOfBullets;
 		Character();
-		void shoot();
-		void updateBulletsState();
+	public:
+		Character(int numberOfBullets, Point& startPos, Bullet::Direction direction);
+		virtual ~Character();
+		void drawBullets();
+		void shoot(Point const& pos);
+		void moveBullets(Entity **enemies, int n);
 };
 
 #endif

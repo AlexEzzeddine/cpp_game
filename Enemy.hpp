@@ -1,11 +1,26 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-class Enemy : public Entity, Character
+#include <cstdlib>
+
+#include "Entity.hpp"
+#include "Character.hpp"
+
+class Enemy : public Entity, public Character
 {
+	private:
+		static Rectangle boundingRectangle;
 	public:
+		enum Direction {left, right, up, down};
 		Enemy();
-		static Point& getRandomPlayerStartPos();
+		void move();
+		void moveUp();
+		void moveDown();
+		void moveLeft();
+		static Point getStartPos();
+		static void setBoundingRectangle(Rectangle rectangle);
+		void destroy();
+
 };
 
 #endif

@@ -11,11 +11,10 @@ class Entity
 	protected:
 		Point pos; // current position on the screen
 		char const symbol;
-		Point topLeftCorner;
-		Point bottomRightCorner;
+		bool display;
 	public:
 		Entity(Entity const& entity);
-		Entity(Point const& pos, char const symbol);
+		Entity(Point const pos, char const symbol, bool display);
 
 		Entity& operator=(Entity const& entity);
 
@@ -32,6 +31,9 @@ class Entity
 		void draw(); //draws entity on the screen at current position (maybe move this method to other class?)
 
 		bool checkCollision(Entity const& entity) const; // checks if this entity collides with other entity
+		bool isDisplayed();
+		void show();
+		void hide();
 };
 
 #endif

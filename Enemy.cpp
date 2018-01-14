@@ -1,14 +1,59 @@
 #include "Enemy.hpp"
 
+Rectangle Enemy::boundingRectangle;
+
 Enemy::Enemy():
-	Entity(Enemy::getRandomPlayerStartPos(), 'X')
+	Entity(Enemy::getStartPos(), 'x', true), Character(3, pos, Bullet::left)
 {
 	return;
 }
 
-Point& Enemy::getRandomPlayerStartPos()
+Point Enemy::getStartPos()
 {
-	int x = 0 // should be random x in right part of the screen
-	int y = 0 // should be random y in right part of the screen
-	return Point(x, y);
+	int rows, cols;
+	getmaxyx(stdscr, rows, cols);
+	int x = cols - 2;
+	int y = rand() % rows;
+	Point pos(x, y);
+	return pos;
+}
+
+void Enemy::setBoundingRectangle(Rectangle rectangle)
+{
+	boundingRectangle = rectangle;
+}
+
+void Enemy::move()
+{
+	Enemy::Direction direction = (Direction)(rand() % 4);
+	if (direction == up)
+		moveLeft();
+	else if (direction == down)
+		moveLeft();
+	else
+		moveLeft();
+}
+
+void Enemy::moveUp()
+{
+	if (boundingRectangle.contains(pos.getX(), pos.getY() - 1))
+		Entity::moveUp();
+	else
+		Entity::moveDown();
+}
+
+void Enemy::moveDown()
+{
+	if (boundingRectangle.contains(pos.getX(), pos.getY() + 1))
+		Entity::moveDown();
+	else
+		Entity::moveUp();
+}
+
+void Enemy::moveLeft()
+{
+	if (boundingRectangle.contains(pos.getX() - 1, pos.getY()))
+		Entity::moveLeft();
+	else
+		pos = Enemy::getStartPos();
 }

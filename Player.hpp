@@ -2,13 +2,23 @@
 #define PLAYER_HPP
 
 #include "Entity.hpp"
-//#include "Character.hpp"
+#include "Character.hpp"
 
-class Player : public Entity//, Character
+class Player : public Entity, public Character
 {
+	private:
+		static Rectangle boundingRectangle;
 	public:
 		Player();
-		static Point getRandomPlayerStartPos();
+
+		void moveUp();
+		void moveRight();
+		void moveDown();
+		void moveLeft();
+		static Point getStartPos();
+		static void setBoundingRectangle(Rectangle rectangle);
+
+
 };
 
 #endif

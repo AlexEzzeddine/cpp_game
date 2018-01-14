@@ -1,11 +1,15 @@
 #ifndef GAME_HPP
 #define GAME_HPP
+
 #include <ncurses.h>
 #include <ctime>
 #include <cstdlib>
 #include <string>
+
 #include "Player.hpp"
-#define FRAMES_PER_SECOND 60
+#include "Enemy.hpp"
+
+#define FRAMES_PER_SECOND 10
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAMES_PER_SECOND)
 #define MAX_ENEMIES 10
 
@@ -18,7 +22,7 @@ class Game
         int         rows;
         int         fps;
         Player      player;
-        // Enemy        _enemies[MAX_ENEMIES];
+        Enemy       **enemies;
 
     public:
         Game();
