@@ -67,7 +67,7 @@ void    Game::startLoop() {
         c = getch();
         this->handleKeyPress(c);
 
-        // WAIT FOR REST OF 1/60th OF SECONDd
+        // WAIT FOR REST OF 1/60th OF SECOND
         while(clock() / CLOCKS_PER_FRAME == now / CLOCKS_PER_FRAME) {}
     }
 }
