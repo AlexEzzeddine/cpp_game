@@ -8,7 +8,8 @@ Game::Game() {
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
     this->_win = initscr();
-    this->_win = subwin(stdscr, WIN_HEI, WIN_WID, 0, 0);
+    // this->_win = subwin(stdscr, WIN_HEI, WIN_WID, 0, 0);
+    getmaxyx(this->_win, this->_maxHei, this->_maxWid);
     this->draw();
 
     std::srand(std::time(0));
@@ -30,12 +31,17 @@ Game::~Game() {
 // }
 
 void    Game::draw() {
-    int y = 1;
+    clear();
+    int x = 1;
 
     wborder(this->_win, '|', '|', '-', '-', 0, 0, 0, 0);
-    for (int i = 1; i < WIN_HEI - 1; i++) {
-        mvaddch(y++, RIGHT_WIN_WID, '|');
+    for (int i = 1; i < this->_maxWid - 1; i++) {
+        mvaddch(this->_maxHei - this->_maxHei / 5, x++, '-');
     }
+    getmaxyx(this->_win, this->_maxHei, this->_maxWid);
+    // this->drawEntities();
+    // this->moveEntities();
+    wrefresh(this->_win);
 }
 
 void    Game::startLoop() {
@@ -50,20 +56,18 @@ void    Game::startLoop() {
         fps++;
         if (((now - before) / CLOCKS_PER_SEC) == 1) {
             before = now;
-            mvprintw(2, RIGHT_WIN_WID + 4, "FPS: %d", fps); //display fps
+            mvprintw(2, this->_maxWid + 4, "FPS: %d", fps); //display fps
             fps = 0;
         }
 
         // DRAW
-        // this->drawEntities();
-        // this->moveEntities();
-        wrefresh(this->_win);
+        this->draw();
         
         // HANDLE KEYPRESS
         c = getch();
         this->handleKeyPress(c);
 
-        // WAIT FOR REST OF 1/60th OF SECONDd
+        // WAIT FOR REST OF 1/60th OF SECOND
         while(clock() / CLOCKS_PER_FRAME == now / CLOCKS_PER_FRAME) {}
     }
 }
