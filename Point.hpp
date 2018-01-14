@@ -11,4 +11,6 @@ class Point
 		int getY();
 		void setX(int x);
 		void setY(int y);
+
+		bool operator==(Point const& point) const;
 }
