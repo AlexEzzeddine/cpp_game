@@ -1,3 +1,6 @@
+#ifndef ENTITY_HPP
+#define ENTITY_HPP
+
 class Entity
 {
 	private:
@@ -21,3 +24,5 @@ class Entity
 
 		bool checkCollision(Entity const& entity) const; // checks if this entity collides with other entity
 }
+
+#endif
