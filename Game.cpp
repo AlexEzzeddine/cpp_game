@@ -14,6 +14,7 @@ Game::Game() {
 
     std::srand(std::time(0));
     this->_finished = false;
+    this->_fps = 60;
     this->startLoop();
 }
 
@@ -32,13 +33,14 @@ Game::~Game() {
 
 void    Game::draw() {
     clear();
+    getmaxyx(this->_win, this->_maxHei, this->_maxWid);
     int x = 1;
 
     wborder(this->_win, '|', '|', '-', '-', 0, 0, 0, 0);
     for (int i = 1; i < this->_maxWid - 1; i++) {
         mvaddch(this->_maxHei - this->_maxHei / 5, x++, '-');
     }
-    getmaxyx(this->_win, this->_maxHei, this->_maxWid);
+    mvprintw(this->_maxHei - 5, 5, "FPS: %d", this->_fps); //display frames
     // this->drawEntities();
     // this->moveEntities();
     wrefresh(this->_win);
@@ -46,22 +48,22 @@ void    Game::draw() {
 
 void    Game::startLoop() {
     int c;
-    int fps = 0;
+    int frames = 0;
     clock_t before = 0;
     clock_t now;
 
     while (!this->_finished) {
-        // CALCULATE FPS
-        now = clock();
-        fps++;
-        if (((now - before) / CLOCKS_PER_SEC) == 1) {
-            before = now;
-            mvprintw(2, this->_maxWid + 4, "FPS: %d", fps); //display fps
-            fps = 0;
-        }
-
         // DRAW
         this->draw();
+
+        // CALCULATE FPS
+        now = clock();
+        frames++;
+        if (((now - before) / CLOCKS_PER_SEC) == 1) {
+            before = now;
+            this->_fps = frames;
+            frames = 0;
+        }
         
         // HANDLE KEYPRESS
         c = getch();
