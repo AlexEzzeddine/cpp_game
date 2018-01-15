@@ -11,6 +11,7 @@ class Character
 		int lives;
 		int numberOfBullets;
 		Character();
+
 	public:
 		Character(int lives, int numberOfBullets, Point& startPos, Bullet::Direction direction);
 		Character(Character const & c);
@@ -27,7 +28,6 @@ class Character
 		void decreaseLives();
 		void increaseLives();
 		
-
 		Character&	operator=(Character const & c);
 };
 

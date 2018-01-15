@@ -13,6 +13,9 @@ class Entity
 		Point pos; // current position on the screen
 		char const symbol;
 		bool display;
+		int	deathCounter;
+		bool dead;
+		
 	public:
 		Entity(Entity const& entity);
 		Entity(Point const pos, char const symbol, bool display);
@@ -33,8 +36,11 @@ class Entity
 
 		bool checkCollision(Entity const& entity) const; // checks if this entity collides with other entity
 		bool isDisplayed();
+
 		void show();
 		void hide();
+		bool isDead();
+		void dies();
 };
 
 #endif

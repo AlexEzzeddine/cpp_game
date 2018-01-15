@@ -5,6 +5,7 @@ Rectangle Player::boundingRectangle;
 Player::Player():
 	Entity(Player::getStartPos(), '>', true), Character(5, NUM_BULLETS, pos, Bullet::right)
 {
+	this->dead = false;
 	return;
 }
 

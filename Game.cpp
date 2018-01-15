@@ -104,7 +104,7 @@ void    Game::drawEntities() {
 	this->player.draw();
 	this->player.drawBullets();
 	for (int i = 0; i < MAX_ENEMIES; i++)
-		if (enemies[i]->isDisplayed())
+		if (enemies[i]->isDisplayed())//!enemies[i]->isDead())
 			enemies[i]->draw();
 }
 
@@ -117,7 +117,7 @@ void    Game::moveEntities() {
 		}
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if (enemies[i]->isDisplayed()) {
+		if (!enemies[i]->isDead()) {
 			enemies[i]->move();
 			if (enemies[i]->isDisplayed() && enemies[i]->checkCollision(this->player))
 			{
@@ -140,7 +140,7 @@ void    Game::moveEntities() {
 void	Game::checkBulletCollision(Bullet & b) {
 	for (int k = 0; k < MAX_ENEMIES; k++) {
 		if (enemies[k]->checkCollision(b)) {
-			enemies[k]->hide();
+			enemies[k]->dies();
 			this->score++;
 			b.hide();
 		}
@@ -182,7 +182,7 @@ void	Game::checkEnemyCollision() {
 			this->player.decreaseLives();
 			if (this->player.getLives() == 0)
 				this->gameOver();
-			enemies[i]->hide();
+			enemies[i]->dies();
 		}
 	}
 }
@@ -232,7 +232,7 @@ void	Game::spawnEnemy() {
 	if (this->spawnTime == this->spawnTimer) {
 		this->spawnTimer = 0;
 		this->spawnTime = rand() % 4 + 1;
-		while (this->enemies[i]->isDisplayed())
+		while (this->enemies[i]->isDisplayed()) //&& !this->enemies[i]->isDead())
 			i++;
 		this->enemies[i]->show();
 	}

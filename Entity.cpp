@@ -1,13 +1,13 @@
 #include "Entity.hpp"
 
 Entity::Entity(Point const pos, char const symbol, bool display):
-	pos(pos), symbol(symbol), display(display)
+	pos(pos), symbol(symbol), display(display), deathCounter(0), dead(false)
 {
 	return;
 }
 
 Entity::Entity(Entity const& entity):
-	pos(entity.pos), symbol(entity.symbol), display(entity.display)
+	pos(entity.pos), symbol(entity.symbol), display(entity.display), deathCounter(0), dead(false)
 {
 	return;
 }
@@ -68,8 +68,32 @@ Point const& Entity::getPos() const
 //draws entity on the screen at current position (maybe move this method to other class?)
 void Entity::draw()
 {
-	if (this->display)
-		mvprintw(pos.getY(), pos.getX(), "%c", symbol); //show Entity character on the screen
+	if (this->display) {
+		int y = this->pos.getY();
+		int x = this->pos.getX();
+		if (!this->dead)
+			mvprintw(y, x, "%c", symbol); //show Entity character on the screen
+		else {
+			if (deathCounter == 0) {
+				deathCounter++;
+				mvprintw(y-1, x-1, "*");
+				mvprintw(y-1, x+1, "*");
+				mvprintw(y+1, x-1, "*");
+				mvprintw(y+1, x+1, "*");
+			}
+			else if (deathCounter == 1) {
+				deathCounter++;
+				mvprintw(y-2, x-2, "*");
+				mvprintw(y-2, x+2, "*");
+				mvprintw(y+2, x-2, "*");
+				mvprintw(y+2, x+2, "*");
+			}
+			else {
+				deathCounter = 0;
+				this->display = false;
+			}
+		}
+	}
 }
 
 // checks if this entity collides with other entity
@@ -91,4 +115,15 @@ void Entity::show()
 void Entity::hide()
 {
 	display = false;
+}
+
+void Entity::dies()
+{
+	this->dead = true;
+	this->display = false;
+}
+
+bool Entity::isDead()
+{
+	return (this->dead);
 }

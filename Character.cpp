@@ -93,4 +93,3 @@ Character&	Character::operator=(Character const & c)
 	this->numberOfBullets = c.getNumBullets();
 	return (*this);
 }
-
