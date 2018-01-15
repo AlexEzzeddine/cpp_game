@@ -13,16 +13,21 @@ class Character
 		Character();
 	public:
 		Character(int lives, int numberOfBullets, Point& startPos, Bullet::Direction direction);
+		Character(Character const & c);
 		virtual ~Character();
+
 		void drawBullets();
 		void shoot(Point const& pos);
 		void moveBullets(Entity **enemies, int n);
-		Bullet** getBullets();
-		int	getNumBullets();
+		Bullet	**getBullets() const;
+		int	getNumBullets() const;
+
 		int getLives();
 		void decreaseLives();
 		void increaseLives();
-		// void destroy();
+		
+
+		Character&	operator=(Character const & c);
 };
 
 #endif

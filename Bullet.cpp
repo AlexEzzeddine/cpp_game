@@ -8,6 +8,15 @@ Bullet::Bullet(Point& startPos, Direction direction):
 	return;
 }
 
+Bullet::Bullet(Bullet const & b) : Entity(b), direction(b.getDirection())
+{
+	*this = b;
+}
+
+Bullet::~Bullet()
+{
+}
+
 Bullet *Bullet::getNextAvailableBullet(Bullet **bullets, int size)
 {
 	for(int i = 0; i < size; i++)
@@ -49,7 +58,24 @@ void Bullet::moveLeft()
 		display = false;
 }
 
+Bullet::Direction	Bullet::getDirection() const
+{
+	return (this->direction);
+}
+
+Rectangle	Bullet::getBoundingRectangle() const
+{
+	return (this->boundingRectangle);
+}
+
 void Bullet::setBoundingRectangle(Rectangle rectangle)
 {
 	boundingRectangle = rectangle;
+}
+
+Bullet&		Bullet::operator=(Bullet const & b)
+{
+	this->pos = b.pos;
+	this->display = b.display;
+	return (*this);
 }

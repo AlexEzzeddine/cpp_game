@@ -19,6 +19,10 @@ Entity& Entity::operator=(Entity const& entity)
 	return *this;
 }
 
+Entity::~Entity()
+{
+}
+
 // moves Entity to absolute position on the screen
 void Entity::move(int x, int y)
 {
