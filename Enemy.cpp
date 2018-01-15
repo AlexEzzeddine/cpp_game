@@ -25,13 +25,13 @@ void Enemy::setBoundingRectangle(Rectangle rectangle)
 
 void Enemy::move()
 {
-	Enemy::Direction direction = (Direction)(rand() % 4);
-	if (direction == up)
-		moveUp();
-	else if (direction == down)
+	int n = rand() % 20;
+	if (n < 18)
+		moveLeft();
+	else if (n == 18)
 		moveDown();
 	else
-		moveLeft();
+		moveUp();
 }
 
 void Enemy::moveUp()
