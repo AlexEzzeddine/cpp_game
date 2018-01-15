@@ -4,11 +4,15 @@
 
 #include "Entity.hpp"
 #include "Character.hpp"
+#define SPEED 3 //num frames til move
 
 class Enemy : public Entity, public Character
 {
 	private:
 		static Rectangle boundingRectangle;
+		int shotCharge;
+		int nextShot;
+		int moveTimer;
 	public:
 		enum Direction {left, right, up, down};
 		Enemy();
@@ -22,7 +26,9 @@ class Enemy : public Entity, public Character
 		static Point getStartPos();
 		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
-		void hide();
+		void show();
+		void dies();
+		void chargeShot();
 };
 
 #endif

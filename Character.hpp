@@ -27,6 +27,7 @@ class Character
 		void setLives(int n);
 		void decreaseLives();
 		void increaseLives();
+		bool isShooting();
 		
 		Character&	operator=(Character const & c);
 };

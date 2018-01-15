@@ -39,16 +39,7 @@ void Character::moveBullets(Entity **enemies, int n)
 	(void)enemies;
 	for (int i = 0; i < numberOfBullets; i++)
 		if (bullets[i]->isDisplayed())
-		{
-			// for (int j = 0; j < n && bullets[i]->isDisplayed(); j++) {
-			// 	if(enemies[j]->isDisplayed() && bullets[i]->checkCollision(*(enemies[j])))
-			// 	{
-			// 		enemies[j]->hide();
-			// 		bullets[i]->hide();
-			// 	}
-			// }
 			bullets[i]->moveForward();
-		}
 }
 
 void Character::drawBullets()
@@ -85,6 +76,16 @@ void Character::decreaseLives()
 void Character::increaseLives()
 {
 	lives++;
+}
+
+bool Character::isShooting()
+{
+	for (int i = 0; i < numberOfBullets; i++)
+	{
+		if (bullets[i]->isDisplayed())
+			return (true);
+	}
+	return (false);
 }
 
 Character&	Character::operator=(Character const & c)

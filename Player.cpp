@@ -51,6 +51,7 @@ void Player::moveLeft()
 {
 	if (boundingRectangle.contains(pos.getX() - 1, pos.getY()))
 		Entity::moveLeft();
+		
 }
 
 Rectangle	Player::getBoundingRectangle() const
@@ -63,10 +64,22 @@ void Player::setBoundingRectangle(Rectangle rectangle)
 	boundingRectangle = rectangle;
 }
 
+void Player::dies() {
+	this->decreaseLives();
+	this->dead = true;
+}
+
 Player&	Player::operator=(Player const & p)
 {
 	this->pos = p.pos;
 	this->boundingRectangle = p.getBoundingRectangle();
 	this->display = p.display;
 	return (*this);
+}
+
+void Player::show() {
+	this->dead = false;
+	this->deathCounter = 0;
+	this->move(Player::getStartPos());
+	this->display = true;
 }

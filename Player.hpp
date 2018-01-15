@@ -20,6 +20,8 @@ class Player : public Entity, public Character
 		static Point getStartPos();
 		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
+		void dies();
+		void show();
 		Player&	operator=(Player const & p);
 };
 

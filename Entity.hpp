@@ -4,6 +4,8 @@
 #include "Point.hpp"
 #include <ncurses.h>
 #define NUM_BULLETS 100
+#define DEATHCOUNTER1 10
+#define DEATHCOUNTER2 22
 
 class Entity
 {
@@ -41,6 +43,7 @@ class Entity
 		void hide();
 		bool isDead();
 		void dies();
+		int getDeathCount();
 };
 
 #endif

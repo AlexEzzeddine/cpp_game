@@ -3,12 +3,14 @@
 Entity::Entity(Point const pos, char const symbol, bool display):
 	pos(pos), symbol(symbol), display(display), deathCounter(0), dead(false)
 {
+	this->deathCounter = 0; ////////////////
 	return;
 }
 
 Entity::Entity(Entity const& entity):
 	pos(entity.pos), symbol(entity.symbol), display(entity.display), deathCounter(0), dead(false)
 {
+	this->deathCounter = 0; //////////////////
 	return;
 }
 
@@ -74,14 +76,14 @@ void Entity::draw()
 		if (!this->dead)
 			mvprintw(y, x, "%c", symbol); //show Entity character on the screen
 		else {
-			if (deathCounter == 0) {
+			if (deathCounter < DEATHCOUNTER1) {
 				deathCounter++;
 				mvprintw(y-1, x-1, "*");
 				mvprintw(y-1, x+1, "*");
 				mvprintw(y+1, x-1, "*");
 				mvprintw(y+1, x+1, "*");
 			}
-			else if (deathCounter == 1) {
+			else if (deathCounter < DEATHCOUNTER2) {
 				deathCounter++;
 				mvprintw(y-2, x-2, "*");
 				mvprintw(y-2, x+2, "*");
@@ -89,7 +91,6 @@ void Entity::draw()
 				mvprintw(y+2, x+2, "*");
 			}
 			else {
-				deathCounter = 0;
 				this->display = false;
 			}
 		}
@@ -109,6 +110,7 @@ bool Entity::isDisplayed()
 
 void Entity::show()
 {
+	this->dead = false;
 	display = true;
 }
 
@@ -120,10 +122,14 @@ void Entity::hide()
 void Entity::dies()
 {
 	this->dead = true;
-	this->display = false;
 }
 
 bool Entity::isDead()
 {
 	return (this->dead);
+}
+
+int Entity::getDeathCount()
+{
+	return (this->deathCounter);
 }

@@ -5,6 +5,8 @@ Rectangle Enemy::boundingRectangle;
 Enemy::Enemy():
 	Entity(Enemy::getStartPos(), 'x', false), Character(1, 3, pos, Bullet::left)
 {
+	shotCharge = 0;
+	this->nextShot = rand() % 100 + 100;
 	return;
 }
 
@@ -40,13 +42,17 @@ void Enemy::setBoundingRectangle(Rectangle rectangle)
 
 void Enemy::move()
 {
-	int n = rand() % 50;
-	if (n < 48)
-		moveLeft();
-	else if (n == 48)
-		moveDown();
-	else
-		moveUp();
+	this->moveTimer++;
+	if (this->moveTimer == SPEED) {
+		int n = rand() % 50;
+		if (n < 48)
+			moveLeft();
+		else if (n == 48)
+			moveDown();
+		else
+			moveUp();
+		this->moveTimer = 0;
+	}
 }
 
 void Enemy::moveUp()
@@ -73,10 +79,9 @@ void Enemy::moveLeft()
 		this->hide();
 }
 
-void Enemy::hide()
+void Enemy::dies()
 {
-	display = false;
-	pos = Enemy::getStartPos();
+	this->dead = true;
 }
 
 Enemy&	Enemy::operator=(Enemy const & e)
@@ -84,5 +89,24 @@ Enemy&	Enemy::operator=(Enemy const & e)
 	this->boundingRectangle = e.getBoundingRectangle();
 	this->pos = e.getPos();
 	this->display = e.display;
+	this->shotCharge = e.shotCharge;
+	this->nextShot = e.nextShot;
 	return (*this);
+}
+
+void Enemy::show()
+{
+	this->deathCounter = 0;
+	this->dead = false;
+	display = true;
+	pos = Enemy::getStartPos();
+}
+
+void Enemy::chargeShot() {
+	this->shotCharge++;
+	if (this->shotCharge == this->nextShot) {
+		this->shoot(this->getPos());
+		this->nextShot = rand() % 100 + 100;
+		this->shotCharge = 0;
+	}
 }

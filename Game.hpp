@@ -9,7 +9,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 
-#define FRAMES_PER_SECOND 30
+#define FRAMES_PER_SECOND 60
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAMES_PER_SECOND)
 #define MAX_ENEMIES 10
 
@@ -54,6 +54,7 @@ class Game
         void    spawnEnemy();
         void    gameOver();
         void    init();
+        void    chargeEnemies();
 };
 
 #endif
