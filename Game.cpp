@@ -12,6 +12,7 @@ Game::Game() {
 	this->time = 0;
 	this->spawnTimer = 0;
 	this->spawnTime = rand() % 4 + 1;
+	this->score = 0;
 	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
 	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
 	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
@@ -73,9 +74,10 @@ void Game::draw() {
 
 	box(stdscr, 0, 0);
 	mvprintw(this->rows - 1, 5, "FPS: %d", this->fps); //display frames
-	mvprintw(this->rows - 1, 50, "ROWS: %d COLS: %d", rows, cols); //display row/cols
-	mvprintw(this->rows - 1, 30, "TIME: %0.2d:%0.2d", this->time / 60, this->time%60);
+	// mvprintw(this->rows - 1, 55, "ROWS: %d COLS: %d", rows, cols); //display row/cols
+	mvprintw(this->rows - 1, 29, "TIME: %0.2d:%0.2d", this->time / 60, this->time%60);
 	mvprintw(this->rows - 1, 17, "NEXT: %d", this->spawnTime - this->spawnTimer);
+	mvprintw(this->rows - 1, 45, "SCORE: %d", this->score);
 	this->drawEntities();
 	refresh();
 }
