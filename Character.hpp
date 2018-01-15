@@ -8,9 +8,11 @@ class Character
 {
 	private:
 		Bullet **bullets;
+		Character();
+		
+	protected:
 		int lives;
 		int numberOfBullets;
-		Character();
 
 	public:
 		Character(int lives, int numberOfBullets, Point& startPos, Bullet::Direction direction);

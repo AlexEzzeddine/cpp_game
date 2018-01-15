@@ -3,9 +3,10 @@
 
 #include "Point.hpp"
 #include <ncurses.h>
-#define NUM_BULLETS 100
 #define DEATHCOUNTER1 10
 #define DEATHCOUNTER2 22
+#define PLAYERCOLOR 2
+#define ENEMYCOLOR 1
 
 class Entity
 {
@@ -34,7 +35,7 @@ class Entity
 		Point const& getPos() const; // retrieves current position
 		void setPos(Point const& point); // sets current position
 
-		void draw(); //draws entity on the screen at current position (maybe move this method to other class?)
+		void draw(int color); //draws entity on the screen at current position (maybe move this method to other class?)
 
 		bool checkCollision(Entity const& entity) const; // checks if this entity collides with other entity
 		bool isDisplayed();

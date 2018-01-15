@@ -46,7 +46,7 @@ void Character::drawBullets()
 {
 	for (int i = 0; i < numberOfBullets; i++)
 		if (bullets[i]->isDisplayed())
-			bullets[i]->draw();
+			bullets[i]->draw(7);
 }
 
 Bullet**	Character::getBullets() const
@@ -92,5 +92,6 @@ Character&	Character::operator=(Character const & c)
 {
 	this->bullets = c.getBullets();
 	this->numberOfBullets = c.getNumBullets();
+	this->lives = c.lives;
 	return (*this);
 }

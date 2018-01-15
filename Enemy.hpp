@@ -5,6 +5,8 @@
 #include "Entity.hpp"
 #include "Character.hpp"
 #define SPEED 3 //num frames til move
+#define NUM_ENEMY_BULLETS 3
+#define NUM_ENEMY_LIVES 1
 
 class Enemy : public Entity, public Character
 {

@@ -3,7 +3,7 @@
 Rectangle Enemy::boundingRectangle;
 
 Enemy::Enemy():
-	Entity(Enemy::getStartPos(), 'x', false), Character(1, 3, pos, Bullet::left)
+	Entity(Enemy::getStartPos(), 'x', false), Character(NUM_ENEMY_LIVES, NUM_ENEMY_BULLETS, pos, Bullet::left)
 {
 	shotCharge = 0;
 	this->nextShot = rand() % 100 + 100;
@@ -84,16 +84,6 @@ void Enemy::dies()
 	this->dead = true;
 }
 
-Enemy&	Enemy::operator=(Enemy const & e)
-{
-	this->boundingRectangle = e.getBoundingRectangle();
-	this->pos = e.getPos();
-	this->display = e.display;
-	this->shotCharge = e.shotCharge;
-	this->nextShot = e.nextShot;
-	return (*this);
-}
-
 void Enemy::show()
 {
 	this->deathCounter = 0;
@@ -109,4 +99,19 @@ void Enemy::chargeShot() {
 		this->nextShot = rand() % 100 + 100;
 		this->shotCharge = 0;
 	}
+}
+
+Enemy&	Enemy::operator=(Enemy const & e)
+{
+	this->boundingRectangle = e.getBoundingRectangle();
+	this->pos = e.getPos();
+	this->display = e.display;
+	this->shotCharge = e.shotCharge;
+	this->nextShot = e.nextShot;
+	this->moveTimer = e.moveTimer;
+	this->deathCounter = e.deathCounter;
+	this->dead = e.dead;
+	this->lives = e.lives;
+	this->numberOfBullets = e.numberOfBullets;
+	return (*this);
 }

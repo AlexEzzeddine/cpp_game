@@ -3,7 +3,7 @@
 Rectangle Player::boundingRectangle;
 
 Player::Player():
-	Entity(Player::getStartPos(), '>', true), Character(5, NUM_BULLETS, pos, Bullet::right)
+	Entity(Player::getStartPos(), '>', true), Character(NUM_PLAYER_LIVES, NUM_PLAYER_BULLETS, pos, Bullet::right)
 {
 	this->dead = false;
 	return;
@@ -69,17 +69,21 @@ void Player::dies() {
 	this->dead = true;
 }
 
-Player&	Player::operator=(Player const & p)
-{
-	this->pos = p.pos;
-	this->boundingRectangle = p.getBoundingRectangle();
-	this->display = p.display;
-	return (*this);
-}
-
 void Player::show() {
 	this->dead = false;
 	this->deathCounter = 0;
 	this->move(Player::getStartPos());
 	this->display = true;
+}
+
+Player&	Player::operator=(Player const & p)
+{
+	this->pos = p.pos;
+	this->boundingRectangle = p.getBoundingRectangle();
+	this->display = p.display;
+	this->deathCounter = p.deathCounter;
+	this->dead = p.dead;
+	this->lives = p.lives;
+	this->numberOfBullets = p.numberOfBullets;
+	return (*this);
 }

@@ -18,6 +18,8 @@ Entity& Entity::operator=(Entity const& entity)
 {
 	this->pos = entity.pos;
 	this->display = entity.display;
+	this->deathCounter = entity.deathCounter;
+	this->dead = entity.dead;
 	return *this;
 }
 
@@ -68,27 +70,35 @@ Point const& Entity::getPos() const
 }
 
 //draws entity on the screen at current position (maybe move this method to other class?)
-void Entity::draw()
+void Entity::draw(int color)
 {
+	(void)color;
 	if (this->display) {
 		int y = this->pos.getY();
 		int x = this->pos.getX();
-		if (!this->dead)
+		if (!this->dead) {
+			// attron(COLOR_PAIR(color));
 			mvprintw(y, x, "%c", symbol); //show Entity character on the screen
+			// attroff(COLOR_PAIR(color));
+		}
 		else {
 			if (deathCounter < DEATHCOUNTER1) {
 				deathCounter++;
+				// attron(COLOR_PAIR(3));
 				mvprintw(y-1, x-1, "*");
 				mvprintw(y-1, x+1, "*");
 				mvprintw(y+1, x-1, "*");
 				mvprintw(y+1, x+1, "*");
+				// attroff(COLOR_PAIR(3));
 			}
 			else if (deathCounter < DEATHCOUNTER2) {
 				deathCounter++;
+				// attron(COLOR_PAIR(3));
 				mvprintw(y-2, x-2, "*");
 				mvprintw(y-2, x+2, "*");
 				mvprintw(y+2, x-2, "*");
 				mvprintw(y+2, x+2, "*");
+				// attroff(COLOR_PAIR(3));
 			}
 			else {
 				this->display = false;

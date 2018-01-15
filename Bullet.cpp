@@ -77,5 +77,7 @@ Bullet&		Bullet::operator=(Bullet const & b)
 {
 	this->pos = b.pos;
 	this->display = b.display;
+	this->deathCounter = b.deathCounter;
+	this->dead = b.dead;
 	return (*this);
 }

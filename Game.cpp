@@ -26,7 +26,7 @@ void	Game::init() {
 	this->fps = 60;
 	this->time = 0;
 	this->spawnTimer = 0;
-	this->player.setLives(5);
+	this->player.setLives(NUM_PLAYER_LIVES);
 	this->score = 0;
 	getmaxyx(stdscr, this->rows, this->cols);
 	this->draw();
@@ -40,8 +40,14 @@ void	Game::init() {
 		this->enemies[i]->hide();
 	}
 	Bullet** b = this->player.getBullets();
-	for (int i = 0; i < NUM_BULLETS; i++) {
+	for (int i = 0; i < NUM_PLAYER_BULLETS; i++) {
 		b[i]->hide();
+	}
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		b = this->enemies[i]->getBullets();
+		for (int j = 0; j < NUM_ENEMY_BULLETS; j++) {
+			b[j]->hide();
+		}
 	}
 }
 
@@ -104,11 +110,11 @@ void Game::draw() {
 }
 
 void    Game::drawEntities() {
-	this->player.draw();
+	this->player.draw(PLAYERCOLOR);
 	this->player.drawBullets();
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (enemies[i]->isDisplayed())
-			enemies[i]->draw();
+			enemies[i]->draw(ENEMYCOLOR);
 		if (enemies[i]->isShooting())
 			enemies[i]->drawBullets();
 	}
@@ -255,6 +261,11 @@ Game&	Game::operator=(Game const & rhs)
 	this->fps = rhs.getFPS();
 	this->player = rhs.getPlayer();
 	this->enemies = rhs.getEnemies();
+	this->restart = rhs.restart;
+	this->time = rhs.time;
+	this->spawnTimer = rhs.spawnTimer;
+	this->spawnTime = rhs.spawnTime;
+	this->score = rhs.score;
 	return (*this);
 }
 
@@ -280,15 +291,20 @@ void	Game::chargeEnemies() {
 
 void	Game::gameOver() {
 	bool	paused = true;
-	int		centerX = this->cols / 2;
-	int		centerY = this->rows / 2;
+	int		centerX;
+	int		centerY;
 	int		c;
 
 	while (paused) {
 		clear();
+		getmaxyx(stdscr, this->rows, this->cols);
+		centerX = this->cols / 2;
+		centerY = this->rows / 2;
 		box(stdscr, '*', '*');
 		mvprintw(centerY - 5, centerX - 5, "GAME  OVER");
-		mvprintw(centerY, centerX - 5, "Try Again?");
+		mvprintw(centerY - 2, centerX - 5, "SCORE: %d", this->score);
+		mvprintw(centerY, centerX - 12, "TIME ELAPSED: %.2d:%.2d", this->time / 60, this->time%60);
+		mvprintw(centerY + 3, centerX - 5, "Try Again?");
 		mvprintw(centerY + 5, centerX - 19, "[1] Yes                       [2] Exit");
 		if ((c = getch()) != ERR) {
 			switch (c) {

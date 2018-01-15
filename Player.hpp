@@ -3,6 +3,8 @@
 
 #include "Entity.hpp"
 #include "Character.hpp"
+#define NUM_PLAYER_BULLETS 100
+#define NUM_PLAYER_LIVES 3
 
 class Player : public Entity, public Character
 {
