@@ -1,20 +1,10 @@
 #include "Game.hpp"
 
 Game::Game() {
-	getmaxyx(stdscr, this->rows, this->cols);
 	this->enemies = new Enemy*[MAX_ENEMIES];
 	for (int i = 0; i < MAX_ENEMIES; i++)
 		this->enemies[i] = new Enemy();
-	this->draw();
-	std::srand(std::time(0));
-	this->finished = false;
-	this->fps = 60;
-	this->time = 0;
-	this->spawnTimer = 0;
-	this->spawnTime = rand() % 4 + 1;
-	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
-	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
-	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
+	this->init();
 }
 
 Game::Game(Game const& obj)
@@ -30,12 +20,27 @@ Game::~Game()
 	return;
 }
 
+void	Game::init() {
+	this->finished = false;
+	this->restart = false;
+	this->fps = 60;
+	this->time = 0;
+	this->spawnTimer = 0;
+	getmaxyx(stdscr, this->rows, this->cols);
+	this->draw();
+	std::srand(std::time(0));
+	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
+	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
+	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
+}
+
 void Game::start()
 {
 	int c;
 	int frames = 0;
-	clock_t before = 0;
+	clock_t before = clock();
 	clock_t now;
+	this->spawnTime = rand() % 4 + 1;
 
 	while (!this->finished)
 	{
@@ -61,9 +66,12 @@ void Game::start()
 			frames = 0;
 		}
 
-
 		// WAIT FOR REST OF 1/60th OF SECOND (or 1/fps'th of a second)
 		while(clock() / CLOCKS_PER_FRAME == now / CLOCKS_PER_FRAME) {}
+	}
+	if (this->restart) {
+		this->init();
+		this->start();
 	}
 }
 
@@ -100,7 +108,7 @@ void    Game::moveEntities() {
 		if (enemies[i]->isDisplayed()) {
 			enemies[i]->move();
 			if (enemies[i]->isDisplayed() && enemies[i]->checkCollision(this->player))
-				this->player.hide();
+				this->gameOver();
 		}
 	}
 	for (int m = 0; m < this->player.getNumBullets(); m++) {
@@ -142,7 +150,7 @@ void    Game::handleKeyPress(int c) {
 			this->player.shoot(player.getPos());
 			break;
 		case 27: // exit on 'esc' for now
-			this->finished = true;
+			this->gameOver();
 			break;
 	}
 }
@@ -150,8 +158,7 @@ void    Game::handleKeyPress(int c) {
 void	Game::checkEnemyCollision() {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (this->enemies[i]->isDisplayed() && this->enemies[i]->checkCollision(this->player))
-			this->player.hide();
-			//GAMEOVER
+			this->gameOver();
 	}
 }
 
@@ -165,4 +172,34 @@ void	Game::spawnEnemy() {
 			i++;
 		this->enemies[i]->show();
 	}
+}
+
+void	Game::gameOver() {
+	bool	paused = true;
+	int		centerX = this->cols / 2;
+	int		centerY = this->rows / 2;
+	int		c;
+
+	while (paused) {
+		clear();
+		box(stdscr, '*', '*');
+		mvprintw(centerY - 5, centerX - 5, "GAME  OVER");
+		mvprintw(centerY, centerX - 5, "Try Again?");
+		mvprintw(centerY + 5, centerX - 19, "[1] Yes                       [2] Exit");
+		if ((c = getch()) != ERR) {
+			switch (c) {
+				case ('1'):
+					this->restart = true;
+					this->finished = true;
+					paused = false;
+					break;
+				case ('2'):
+					paused = false;
+					this->finished = true;
+					break;
+			}
+		}	
+	}
+	clear();
+
 }

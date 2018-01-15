@@ -18,13 +18,13 @@ class Game
     private:
         WINDOW*     win;
         bool        finished;
+        bool        restart;
         int         cols;
         int         rows;
         int         fps;
         Player      player;
         Enemy       **enemies;
         int         time;
-        int         timer;
         int         spawnTimer;
         int         spawnTime;
         int         score;
@@ -44,6 +44,8 @@ class Game
         void    checkEnemyCollision();
         void    checkBulletCollision(Bullet & b);
         void    spawnEnemy();
+        void    gameOver();
+        void    init();
 };
 
 #endif
