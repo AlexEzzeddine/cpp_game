@@ -3,6 +3,7 @@
 
 #include "Bullet.hpp"
 
+
 class Character
 {
 	private:
@@ -20,6 +21,7 @@ class Character
 		int	getNumBullets() const;
 
 		Character&	operator=(Character const & c);
+		// void destroy();
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "Point.hpp"
 #include <ncurses.h>
+#define NUM_BULLETS 100
 
 class Entity
 {

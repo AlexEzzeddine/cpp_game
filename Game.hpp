@@ -9,7 +9,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 
-#define FRAMES_PER_SECOND 10
+#define FRAMES_PER_SECOND 30
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAMES_PER_SECOND)
 #define MAX_ENEMIES 10
 
@@ -23,6 +23,11 @@ class Game
         int         fps;
         Player      player;
         Enemy       **enemies;
+        int         time;
+        int         timer;
+        int         spawnTimer;
+        int         spawnTime;
+        int         score;
 
     public:
         Game();
@@ -43,6 +48,11 @@ class Game
 		int		getFPS() const;
 		Player	getPlayer() const;
 		Enemy**	getEnemies() const;
+
+        void    checkEnemyCollision();
+        void    checkBulletCollision(Bullet & b);
+        void    spawnEnemy();
+
 };
 
 #endif

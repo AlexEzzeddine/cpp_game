@@ -3,7 +3,7 @@
 Rectangle Player::boundingRectangle;
 
 Player::Player():
-	Entity(Player::getStartPos(), '>', true), Character(10, pos, Bullet::right)
+	Entity(Player::getStartPos(), '>', true), Character(NUM_BULLETS, pos, Bullet::right)
 {
 	return;
 }

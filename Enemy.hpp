@@ -1,6 +1,5 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
-
 #include <cstdlib>
 
 #include "Entity.hpp"
@@ -23,8 +22,7 @@ class Enemy : public Entity, public Character
 		static Point getStartPos();
 		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
-		void destroy();
-
+		void hide();
 };
 
 #endif

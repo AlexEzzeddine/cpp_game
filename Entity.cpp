@@ -68,7 +68,8 @@ Point const& Entity::getPos() const
 //draws entity on the screen at current position (maybe move this method to other class?)
 void Entity::draw()
 {
-	mvprintw(pos.getY(), pos.getX(), "%c", symbol); //show Entity character on the screen
+	if (this->display)
+		mvprintw(pos.getY(), pos.getX(), "%c", symbol); //show Entity character on the screen
 }
 
 // checks if this entity collides with other entity

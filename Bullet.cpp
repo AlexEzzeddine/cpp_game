@@ -3,7 +3,7 @@
 Rectangle Bullet::boundingRectangle;
 
 Bullet::Bullet(Point& startPos, Direction direction):
-	Entity(startPos, '.', false), direction(direction)
+	Entity(startPos, '-', false), direction(direction)
 {
 	return;
 }

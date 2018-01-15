@@ -3,7 +3,7 @@
 Rectangle Enemy::boundingRectangle;
 
 Enemy::Enemy():
-	Entity(Enemy::getStartPos(), 'x', true), Character(3, pos, Bullet::left)
+	Entity(Enemy::getStartPos(), 'x', false), Character(3, pos, Bullet::left)
 {
 	return;
 }
@@ -70,7 +70,13 @@ void Enemy::moveLeft()
 	if (boundingRectangle.contains(pos.getX() - 1, pos.getY()))
 		Entity::moveLeft();
 	else
-		pos = Enemy::getStartPos();
+		this->hide();
+}
+
+void Enemy::hide()
+{
+	display = false;
+	pos = Enemy::getStartPos();
 }
 
 Enemy&	Enemy::operator=(Enemy const & e)

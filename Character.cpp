@@ -35,15 +35,18 @@ void Character::shoot(Point const& pos)
 
 void Character::moveBullets(Entity **enemies, int n)
 {
+	(void)n;
+	(void)enemies;
 	for (int i = 0; i < numberOfBullets; i++)
 		if (bullets[i]->isDisplayed())
 		{
-			for (int j = 0; j < n && bullets[i]->isDisplayed(); j++)
-				if(enemies[j]->isDisplayed() && bullets[i]->checkCollision(*(enemies[j])))
-				{
-					enemies[j]->hide();
-					bullets[i]->hide();
-				}
+			// for (int j = 0; j < n && bullets[i]->isDisplayed(); j++) {
+			// 	if(enemies[j]->isDisplayed() && bullets[i]->checkCollision(*(enemies[j])))
+			// 	{
+			// 		enemies[j]->hide();
+			// 		bullets[i]->hide();
+			// 	}
+			// }
 			bullets[i]->moveForward();
 		}
 }
