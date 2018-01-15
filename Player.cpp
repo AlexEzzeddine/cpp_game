@@ -3,7 +3,17 @@
 Rectangle Player::boundingRectangle;
 
 Player::Player():
-	Entity(Player::getStartPos(), '>', true), Character(NUM_BULLETS, pos, Bullet::right)
+	Entity(Player::getStartPos(), '>', true), Character(5, NUM_BULLETS, pos, Bullet::right)
+{
+	return;
+}
+
+Player::Player(Player const & p) : Entity(p), Character(p)
+{
+	*this = p;
+}
+
+Player::~Player()
 {
 	return;
 }
@@ -42,7 +52,20 @@ void Player::moveLeft()
 		Entity::moveLeft();
 }
 
+Rectangle	Player::getBoundingRectangle() const
+{
+	return (this->boundingRectangle);
+}
+
 void Player::setBoundingRectangle(Rectangle rectangle)
 {
 	boundingRectangle = rectangle;
+}
+
+Player&	Player::operator=(Player const & p)
+{
+	this->pos = p.pos;
+	this->boundingRectangle = p.getBoundingRectangle();
+	this->display = p.display;
+	return (*this);
 }

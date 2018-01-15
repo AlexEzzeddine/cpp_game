@@ -33,7 +33,7 @@ class Game
         Game();
         Game(Game const & src);
         ~Game();
-        // Game & operator=(Game const & rhs);
+        Game & operator=(Game const & rhs);
         void    initScreen();
         void    handleInput(char c);
         void    drawEntities();
@@ -41,6 +41,14 @@ class Game
         void    start();
         void    draw();
         void    handleKeyPress(int c);
+		WINDOW*	getWin() const;
+		bool	getFinished() const;
+		int		getCols() const;
+		int		getRows() const;
+		int		getFPS() const;
+		Player	getPlayer() const;
+		Enemy**	getEnemies() const;
+
         void    checkEnemyCollision();
         void    checkBulletCollision(Bullet & b);
         void    spawnEnemy();

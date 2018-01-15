@@ -3,7 +3,17 @@
 Rectangle Enemy::boundingRectangle;
 
 Enemy::Enemy():
-	Entity(Enemy::getStartPos(), 'x', false), Character(3, pos, Bullet::left)
+	Entity(Enemy::getStartPos(), 'x', false), Character(1, 3, pos, Bullet::left)
+{
+	return;
+}
+
+Enemy::Enemy(Enemy const & e) : Entity(e), Character(e)
+{
+	*this = e;
+}
+
+Enemy::~Enemy()
 {
 	return;
 }
@@ -18,6 +28,11 @@ Point Enemy::getStartPos()
 	return pos;
 }
 
+Rectangle	Enemy::getBoundingRectangle() const
+{
+	return (this->boundingRectangle);
+}
+
 void Enemy::setBoundingRectangle(Rectangle rectangle)
 {
 	boundingRectangle = rectangle;
@@ -25,13 +40,13 @@ void Enemy::setBoundingRectangle(Rectangle rectangle)
 
 void Enemy::move()
 {
-	Enemy::Direction direction = (Direction)(rand() % 4);
-	if (direction == up)
-		moveUp();
-	else if (direction == down)
+	int n = rand() % 50;
+	if (n < 48)
+		moveLeft();
+	else if (n == 48)
 		moveDown();
 	else
-		moveLeft();
+		moveUp();
 }
 
 void Enemy::moveUp()
@@ -62,4 +77,12 @@ void Enemy::hide()
 {
 	display = false;
 	pos = Enemy::getStartPos();
+}
+
+Enemy&	Enemy::operator=(Enemy const & e)
+{
+	this->boundingRectangle = e.getBoundingRectangle();
+	this->pos = e.getPos();
+	this->display = e.display;
+	return (*this);
 }
