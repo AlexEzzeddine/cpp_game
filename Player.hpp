@@ -11,7 +11,7 @@ class Player : public Entity, public Character
 	public:
 		Player();
 		Player(Player const & p);
-		~Player();
+		virtual ~Player();
 
 		void moveUp();
 		void moveRight();

@@ -13,6 +13,11 @@ Player::Player(Player const & p) : Entity(p), Character(p)
 	*this = p;
 }
 
+Player::~Player()
+{
+	return;
+}
+
 Point Player::getStartPos()
 {
 	int rows, cols;
