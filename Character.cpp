@@ -18,19 +18,19 @@ Character::~Character()
 	return;
 }
 
-Character::Character(int lives, int numberOfBullets, Point& startPos, Bullet::Direction direction):
+Character::Character(int lives, int numberOfBullets, Rectangle& rectangle, Bullet::Direction direction):
 	lives(lives), numberOfBullets(numberOfBullets)
 {
 	bullets = new Bullet*[numberOfBullets];
 	for (int i = 0; i < numberOfBullets; i++)
-		bullets[i] = new Bullet(startPos, direction);
+		bullets[i] = new Bullet(rectangle, direction);
 }
 
-void Character::shoot(Point const& pos)
+void Character::shoot(Rectangle const &rectangle)
 {
 	Bullet *bullet = Bullet::getNextAvailableBullet(bullets, numberOfBullets);
 	if (bullet)
-		bullet->shoot(pos);
+		bullet->shoot(rectangle);
 }
 
 void Character::moveBullets(Entity **enemies, int n)

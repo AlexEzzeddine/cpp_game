@@ -2,8 +2,10 @@
 
 Rectangle Enemy::boundingRectangle;
 
+EntityRepresentation Enemy::representation("x", 1, 1);
+
 Enemy::Enemy():
-	Entity(Enemy::getStartPos(), 'x', false), Character(1, 3, pos, Bullet::left)
+	Entity(Enemy::getStartPos(), representation, false), Character(1, 3, rectangle, Bullet::left)
 {
 	return;
 }
@@ -18,14 +20,14 @@ Enemy::~Enemy()
 	return;
 }
 
-Point Enemy::getStartPos()
+Rectangle Enemy::getStartPos()
 {
 	int rows, cols;
 	getmaxyx(stdscr, rows, cols);
 	int x = cols - 2;
-	int y = rand() % rows;
-	Point pos(x, y);
-	return pos;
+	int y = rand() % (rows - representation.getHeight() - 2);
+	Rectangle rectangle(x, y, representation.getWidth(), representation.getHeight());
+	return rectangle;
 }
 
 Rectangle	Enemy::getBoundingRectangle() const
@@ -51,7 +53,8 @@ void Enemy::move()
 
 void Enemy::moveUp()
 {
-	if (boundingRectangle.contains(pos.getX(), pos.getY() - 1))
+	Rectangle newRect = rectangle.translate(0, -1);
+	if (boundingRectangle.contains(newRect))
 		Entity::moveUp();
 	else
 		Entity::moveDown();
@@ -59,7 +62,8 @@ void Enemy::moveUp()
 
 void Enemy::moveDown()
 {
-	if (boundingRectangle.contains(pos.getX(), pos.getY() + 1))
+	Rectangle newRect = rectangle.translate(0, 1);
+	if (boundingRectangle.contains(newRect))
 		Entity::moveDown();
 	else
 		Entity::moveUp();
@@ -67,7 +71,8 @@ void Enemy::moveDown()
 
 void Enemy::moveLeft()
 {
-	if (boundingRectangle.contains(pos.getX() - 1, pos.getY()))
+	Rectangle newRect = rectangle.translate(-1, 0);
+	if (boundingRectangle.contains(newRect))
 		Entity::moveLeft();
 	else
 		this->hide();
@@ -76,13 +81,13 @@ void Enemy::moveLeft()
 void Enemy::hide()
 {
 	display = false;
-	pos = Enemy::getStartPos();
+	rectangle = Enemy::getStartPos();
 }
 
 Enemy&	Enemy::operator=(Enemy const & e)
 {
 	this->boundingRectangle = e.getBoundingRectangle();
-	this->pos = e.getPos();
+	this->rectangle = e.getRectangle();
 	this->display = e.display;
 	return (*this);
 }

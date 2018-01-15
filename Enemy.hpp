@@ -9,6 +9,7 @@ class Enemy : public Entity, public Character
 {
 	private:
 		static Rectangle boundingRectangle;
+		static EntityRepresentation representation;
 	public:
 		enum Direction {left, right, up, down};
 		Enemy();
@@ -19,7 +20,7 @@ class Enemy : public Entity, public Character
 		void moveUp();
 		void moveDown();
 		void moveLeft();
-		static Point getStartPos();
+		static Rectangle getStartPos();
 		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
 		void hide();

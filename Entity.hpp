@@ -2,7 +2,11 @@
 #define ENTITY_HPP
 
 #include "Point.hpp"
+#include "Rectangle.hpp"
+#include "EntityRepresentation.hpp"
+
 #include <ncurses.h>
+
 #define NUM_BULLETS 100
 
 class Entity
@@ -10,12 +14,12 @@ class Entity
 	private:
 		Entity();
 	protected:
-		Point pos; // current position on the screen
-		char const symbol;
+		Rectangle rectangle; // current position on the screen
+		EntityRepresentation const& representation;
 		bool display;
 	public:
 		Entity(Entity const& entity);
-		Entity(Point const pos, char const symbol, bool display);
+		Entity(Rectangle rectangle, EntityRepresentation const& representation, bool display);
 		Entity& operator=(Entity const& entity);
 		~Entity();
 
@@ -26,8 +30,8 @@ class Entity
 		void moveDown(); // moves Entity one position down
 		void moveLeft(); // moves Entity one position left
 
-		Point const& getPos() const; // retrieves current position
-		void setPos(Point const& point); // sets current position
+		Rectangle const& getRectangle() const; // retrieves current position
+		void setRectangle(Rectangle& rectangle); // sets current position
 
 		void draw(); //draws entity on the screen at current position (maybe move this method to other class?)
 

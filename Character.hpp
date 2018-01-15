@@ -12,12 +12,12 @@ class Character
 		int numberOfBullets;
 		Character();
 	public:
-		Character(int lives, int numberOfBullets, Point& startPos, Bullet::Direction direction);
+		Character(int lives, int numberOfBullets, Rectangle& rectangle, Bullet::Direction direction);
 		Character(Character const & c);
 		virtual ~Character();
 
 		void drawBullets();
-		void shoot(Point const& pos);
+		void shoot(Rectangle const& rectangle);
 		void moveBullets(Entity **enemies, int n);
 		Bullet	**getBullets() const;
 		int	getNumBullets() const;

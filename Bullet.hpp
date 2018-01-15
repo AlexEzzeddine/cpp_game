@@ -9,10 +9,10 @@ class Bullet : public Entity
 	public:
 		enum Direction {left, right};
 
-		Bullet(Point& startPos, Direction direction);
+		Bullet(Rectangle& rectangle, Direction direction);
 		Bullet(Bullet const & b);
 		~Bullet();
-		void shoot(Point const& pos);
+		void shoot(Rectangle const& rectangle);
 		void moveForward();
 		void moveRight();
 		void moveLeft();
@@ -24,6 +24,7 @@ class Bullet : public Entity
 	private:
 		Bullet();
 		static Rectangle boundingRectangle;
+		static EntityRepresentation representation;
 		Direction const direction;
 };
 #endif

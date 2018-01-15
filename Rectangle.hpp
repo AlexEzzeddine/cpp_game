@@ -6,11 +6,11 @@
 class Rectangle
 {
 	private:
+	public:
 		int left;
 		int top;
 		int width;
 		int height;
-	public:
 		Rectangle();
 		Rectangle(int left, int top, int width, int height);
 		Rectangle(Point& topLeft, Point& bottomRight);
@@ -22,6 +22,12 @@ class Rectangle
 
 		bool contains(int x, int y);
 		bool contains(Point& point);
+		bool contains(Rectangle& rectangle);
+
+		Rectangle translate(int x, int y);
+		void setCoords(int x, int y);
+		void setCoords(Point const& point);
+		bool overlaps(Rectangle const& rectangle) const;
 };
 
 #endif

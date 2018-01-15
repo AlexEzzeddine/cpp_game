@@ -34,7 +34,8 @@ void	Game::init() {
 	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
 	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
 
-	this->player.move(Player::getStartPos());
+	Rectangle newPlayerPosition = Player::getStartPos();
+	this->player.setRectangle(newPlayerPosition);
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		this->enemies[i]->hide();
 	}
@@ -90,8 +91,7 @@ void Game::draw() {
 	getmaxyx(stdscr, rows, cols);
 
 	box(stdscr, 0, 0);
-	mvprintw(this->rows - 1, 5, "FPS: %d", this->fps); //display frames
-	// mvprintw(this->rows - 1, 55, "ROWS: %d COLS: %d", rows, cols); //display row/cols
+	mvprintw(this->rows - 1, 5, "FPS: %d", this->fps);
 	mvprintw(this->rows - 1, 29, "TIME: %0.2d:%0.2d", this->time / 60, this->time%60);
 	mvprintw(this->rows - 1, 17, "NEXT: %d", this->spawnTime - this->spawnTimer);
 	mvprintw(this->rows - 1, 45, "SCORE: %d", this->score);
@@ -166,7 +166,7 @@ void    Game::handleKeyPress(int c) {
 			this->checkEnemyCollision();
 			break;
 		case ' ':
-			this->player.shoot(player.getPos());
+			this->player.shoot(player.getRectangle());
 			break;
 		case 27: // exit on 'esc' for now
 			this->gameOver();

@@ -1,81 +1,86 @@
 #include "Entity.hpp"
 
-Entity::Entity(Point const pos, char const symbol, bool display):
-	pos(pos), symbol(symbol), display(display)
+Entity::Entity(Rectangle rectangle, EntityRepresentation const& representation, bool display):
+	rectangle(rectangle), representation(representation), display(display)
 {
 	return;
 }
 
 Entity::Entity(Entity const& entity):
-	pos(entity.pos), symbol(entity.symbol), display(entity.display)
+	rectangle(entity.rectangle), representation(entity.representation), display(entity.display)
 {
 	return;
 }
 
 Entity& Entity::operator=(Entity const& entity)
 {
-	this->pos = entity.pos;
+	this->rectangle = entity.rectangle;
 	this->display = entity.display;
 	return *this;
 }
 
 Entity::~Entity()
 {
+	return;
 }
 
 // moves Entity to absolute position on the screen
 void Entity::move(int x, int y)
 {
-	pos.setCoords(x, y);
+	rectangle.setCoords(x, y);
 }
 
 // moves Entity to absolute position on the screen
 void Entity::move(Point const& point)
 {
-	pos = point;
+	rectangle.setCoords(point);
 }
 
 // moves Entity one position up
 void Entity::moveUp()
 {
-	move(pos.getX(), pos.getY() - 1);
+	move(rectangle.left, rectangle.top - 1);
 }
 
 // moves Entity one position right
 void Entity::moveRight()
 {
-	move(pos.getX() + 1, pos.getY());
+	move(rectangle.left + 1, rectangle.top);
 }
 
 // moves Entity one position down
 void Entity::moveDown()
 {
-	move(pos.getX(), pos.getY() + 1);
+	move(rectangle.left, rectangle.top + 1);
 }
 
 // moves Entity one position left
 void Entity::moveLeft()
 {
-	move(pos.getX() - 1, pos.getY());
+	move(rectangle.left - 1, rectangle.top);
 }
 
-// retrieves current position
-Point const& Entity::getPos() const
+void Entity::setRectangle(Rectangle& rectangle)
 {
-	return pos;
+	this->rectangle = rectangle;
+}
+
+Rectangle const& Entity::getRectangle() const // retrieves current position
+{
+	return rectangle;
 }
 
 //draws entity on the screen at current position (maybe move this method to other class?)
 void Entity::draw()
 {
 	if (this->display)
-		mvprintw(pos.getY(), pos.getX(), "%c", symbol); //show Entity character on the screen
+		representation.draw(rectangle.left, rectangle.top);
 }
 
 // checks if this entity collides with other entity
 bool Entity::checkCollision(Entity const& entity) const
 {
-	return this->pos == entity.pos;
+	return rectangle.overlaps(entity.getRectangle());
 }
 
 bool Entity::isDisplayed()

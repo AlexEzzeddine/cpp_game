@@ -59,3 +59,41 @@ bool Rectangle::contains(Point& point)
 	int y = point.getY();
 	return contains(x, y);
 }
+
+bool Rectangle::contains(Rectangle& rectangle)
+{
+	if(this->left <= rectangle.left
+		&& this->top <= rectangle.top
+		&& this->left + this->width >= rectangle.left + rectangle.width
+		&& this->top + this->height >= rectangle.top + rectangle.height)
+		return true;
+	return false;
+}
+
+bool Rectangle::overlaps(Rectangle const& rectangle) const
+{
+	if (this->left > rectangle.left + rectangle.width || rectangle.left > this->left + this->width)
+		return false;
+
+	if (this->top > rectangle.top + rectangle.height || rectangle.top > this->top + this->height)
+		return false;
+ 
+	return true;
+}
+
+Rectangle Rectangle::translate(int x, int y)
+{
+	return Rectangle(this->left + x, this->top + y, this->width, this->height);
+}
+
+void Rectangle::setCoords(int x, int y)
+{
+	left = x;
+	top = y;
+}
+
+void Rectangle::setCoords(Point const& point)
+{
+	left = point.getX();
+	top = point.getY();
+}

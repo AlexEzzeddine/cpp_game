@@ -2,8 +2,10 @@
 
 Rectangle Bullet::boundingRectangle;
 
-Bullet::Bullet(Point& startPos, Direction direction):
-	Entity(startPos, '-', false), direction(direction)
+EntityRepresentation Bullet::representation("-", 1, 1);
+
+Bullet::Bullet(Rectangle &rectangle, Direction direction):
+	Entity(rectangle, representation, false), direction(direction)
 {
 	return;
 }
@@ -27,9 +29,12 @@ Bullet *Bullet::getNextAvailableBullet(Bullet **bullets, int size)
 	return NULL;
 }
 
-void Bullet::shoot(Point const& pos)
+void Bullet::shoot(Rectangle const& rectangle)
 {
-	this->pos = pos;
+	if (direction == left)
+		this->rectangle = Rectangle(rectangle.left - 1, rectangle.top + rectangle.height / 2, 1, 1);
+	else
+		this->rectangle = Rectangle(rectangle.left + rectangle.width + 1, rectangle.top + rectangle.height / 2, 1, 1);
 	display = true;
 	moveForward();
 }
@@ -44,7 +49,8 @@ void Bullet::moveForward()
 
 void Bullet::moveRight()
 {
-	if (boundingRectangle.contains(pos.getX() + 1, pos.getY()))
+	Rectangle newRect = rectangle.translate(1,0);
+	if (boundingRectangle.contains(newRect))
 		Entity::moveRight();
 	else
 		display = false;
@@ -52,7 +58,8 @@ void Bullet::moveRight()
 
 void Bullet::moveLeft()
 {
-	if (boundingRectangle.contains(pos.getX() - 1, pos.getY()))
+	Rectangle newRect = rectangle.translate(1,0);
+	if (boundingRectangle.contains(newRect))
 		Entity::moveLeft();
 	else
 		display = false;
@@ -75,7 +82,6 @@ void Bullet::setBoundingRectangle(Rectangle rectangle)
 
 Bullet&		Bullet::operator=(Bullet const & b)
 {
-	this->pos = b.pos;
-	this->display = b.display;
+	(Entity&)(*this) = (Entity&)b;
 	return (*this);
 }

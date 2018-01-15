@@ -8,6 +8,7 @@ class Player : public Entity, public Character
 {
 	private:
 		static Rectangle boundingRectangle;
+		static EntityRepresentation representation;
 	public:
 		Player();
 		Player(Player const & p);
@@ -17,7 +18,7 @@ class Player : public Entity, public Character
 		void moveRight();
 		void moveDown();
 		void moveLeft();
-		static Point getStartPos();
+		static Rectangle getStartPos();
 		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
 		Player&	operator=(Player const & p);

@@ -6,13 +6,13 @@
 #    By: aezzeddi <aezzeddi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/06/21 22:34:31 by jchow             #+#    #+#              #
-#    Updated: 2018/01/14 18:11:51 by aezzeddi         ###   ########.fr        #
+#    Updated: 2018/01/14 21:05:18 by aezzeddi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =      ft_retro
 
-SRC =       main Game Bullet Character Enemy Entity Player Point Rectangle
+SRC =       main Game Bullet Character Enemy Entity Player Point Rectangle EntityRepresentation
 
 SRC_DIR =       ./
 SRC_C =         $(addsuffix .cpp, $(SRC))
