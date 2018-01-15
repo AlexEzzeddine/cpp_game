@@ -27,6 +27,7 @@ class Game
         int         timer;
         int         spawnTimer;
         int         spawnTime;
+        int         score;
 
     public:
         Game();

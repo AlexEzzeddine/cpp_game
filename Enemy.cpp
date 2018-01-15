@@ -27,9 +27,9 @@ void Enemy::move()
 {
 	Enemy::Direction direction = (Direction)(rand() % 4);
 	if (direction == up)
-		moveLeft();
+		moveUp();
 	else if (direction == down)
-		moveLeft();
+		moveDown();
 	else
 		moveLeft();
 }

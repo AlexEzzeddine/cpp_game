@@ -114,6 +114,7 @@ void	Game::checkBulletCollision(Bullet & b) {
 	for (int k = 0; k < MAX_ENEMIES; k++) {
 		if (enemies[k]->checkCollision(b)) {
 			enemies[k]->hide();
+			this->score++;
 			b.hide();
 		}
 	}
@@ -150,6 +151,7 @@ void	Game::checkEnemyCollision() {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (this->enemies[i]->isDisplayed() && this->enemies[i]->checkCollision(this->player))
 			this->player.hide();
+			//GAMEOVER
 	}
 }
 
