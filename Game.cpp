@@ -13,9 +13,9 @@ Game::Game() {
 	this->spawnTimer = 0;
 	this->spawnTime = rand() % 4 + 1;
 	this->score = 0;
-	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
+	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 3, this->rows - 3));
 	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
-	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
+	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 3, this->rows - 3));
 }
 
 Game::Game(Game const& obj)
@@ -47,8 +47,11 @@ void Game::start()
 		this->spawnEnemy();
 		// UPDATE POSITIONS
 		this->moveEntities();
+		if (!this->player.getLives())
+			this->finished = true;
 		// DRAW
-		this->draw();
+		else
+			this->draw();
 
 		// CALCULATE TIME AND FPS
 		now = clock();
@@ -78,6 +81,7 @@ void Game::draw() {
 	mvprintw(this->rows - 1, 29, "TIME: %0.2d:%0.2d", this->time / 60, this->time%60);
 	mvprintw(this->rows - 1, 17, "NEXT: %d", this->spawnTime - this->spawnTimer);
 	mvprintw(this->rows - 1, 45, "SCORE: %d", this->score);
+	mvprintw(this->rows - 1, 60, "LIVES: %d", this->player.getLives());
 	this->drawEntities();
 	refresh();
 }
@@ -102,7 +106,10 @@ void    Game::moveEntities() {
 		if (enemies[i]->isDisplayed()) {
 			enemies[i]->move();
 			if (enemies[i]->isDisplayed() && enemies[i]->checkCollision(this->player))
-				this->player.hide();
+			{
+				this->player.decreaseLives();
+				enemies[i]->hide();
+			}
 		}
 	}
 	for (int m = 0; m < this->player.getNumBullets(); m++) {
@@ -150,10 +157,13 @@ void    Game::handleKeyPress(int c) {
 }
 
 void	Game::checkEnemyCollision() {
-	for (int i = 0; i < MAX_ENEMIES; i++) {
+	for (int i = 0; i < MAX_ENEMIES; i++)
+	{
 		if (this->enemies[i]->isDisplayed() && this->enemies[i]->checkCollision(this->player))
-			this->player.hide();
-			//GAMEOVER
+		{
+			this->player.decreaseLives();
+			enemies[i]->hide();
+		}
 	}
 }
 

@@ -3,7 +3,7 @@
 Rectangle Enemy::boundingRectangle;
 
 Enemy::Enemy():
-	Entity(Enemy::getStartPos(), 'x', false), Character(3, pos, Bullet::left)
+	Entity(Enemy::getStartPos(), 'x', false), Character(1, 3, pos, Bullet::left)
 {
 	return;
 }
@@ -25,10 +25,10 @@ void Enemy::setBoundingRectangle(Rectangle rectangle)
 
 void Enemy::move()
 {
-	int n = rand() % 20;
-	if (n < 18)
+	int n = rand() % 50;
+	if (n < 48)
 		moveLeft();
-	else if (n == 18)
+	else if (n == 48)
 		moveDown();
 	else
 		moveUp();

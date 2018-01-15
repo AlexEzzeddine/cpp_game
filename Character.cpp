@@ -13,8 +13,8 @@ Character::~Character()
 	return;
 }
 
-Character::Character(int numberOfBullets, Point& startPos, Bullet::Direction direction):
-	numberOfBullets(numberOfBullets)
+Character::Character(int lives, int numberOfBullets, Point& startPos, Bullet::Direction direction):
+	lives(lives), numberOfBullets(numberOfBullets)
 {
 	bullets = new Bullet*[numberOfBullets];
 	for (int i = 0; i < numberOfBullets; i++)
@@ -61,4 +61,19 @@ Bullet** Character::getBullets()
 int		Character::getNumBullets()
 {
 	return (this->numberOfBullets);
+}
+
+int Character::getLives()
+{
+	return lives;
+}
+
+void Character::decreaseLives()
+{
+	lives--;
+}
+
+void Character::increaseLives()
+{
+	lives++;
 }
