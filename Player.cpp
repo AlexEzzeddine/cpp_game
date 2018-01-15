@@ -5,8 +5,9 @@ Rectangle Player::boundingRectangle;
 EntityRepresentation Player::representation(">>>", 3, 1);
 
 Player::Player():
-	Entity(Player::getStartPos(), representation, true), Character(5, NUM_BULLETS, rectangle, Bullet::right)
+	Entity(Player::getStartPos(), representation, true), Character(NUM_PLAYER_LIVES, NUM_BULLETS, rectangle, Bullet::right)
 {
+	this->dead = false;
 	return;
 }
 
@@ -56,6 +57,7 @@ void Player::moveLeft()
 	Rectangle newRect = rectangle.translate(-1, 0);
 	if (boundingRectangle.contains(newRect))
 		Entity::moveLeft();
+		
 }
 
 Rectangle	Player::getBoundingRectangle() const
@@ -68,10 +70,27 @@ void Player::setBoundingRectangle(Rectangle rectangle)
 	boundingRectangle = rectangle;
 }
 
+void Player::dies() {
+	this->decreaseLives();
+	this->dead = true;
+}
+
+void Player::show() {
+	this->dead = false;
+	this->deathCounter = 0;
+	Rectangle newPlayerPosition = Player::getStartPos();
+	this->rectangle = newPlayerPosition;
+	this->display = true;
+}
+
 Player&	Player::operator=(Player const & p)
 {
 	this->boundingRectangle = p.getBoundingRectangle();
 	this->rectangle = p.getRectangle();
 	this->display = p.display;
+	this->deathCounter = p.deathCounter;
+	this->dead = p.dead;
+	this->lives = p.lives;
+	this->numberOfBullets = p.numberOfBullets;
 	return (*this);
 }

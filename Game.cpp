@@ -26,8 +26,10 @@ void	Game::init() {
 	this->fps = 60;
 	this->time = 0;
 	this->spawnTimer = 0;
-	this->player.setLives(5);
+	this->player.setLives(NUM_PLAYER_LIVES);
+	this->score = 0;
 	getmaxyx(stdscr, this->rows, this->cols);
+	this->player.show();
 	this->draw();
 	std::srand(std::time(0));
 	Bullet::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
@@ -40,8 +42,14 @@ void	Game::init() {
 		this->enemies[i]->hide();
 	}
 	Bullet** b = this->player.getBullets();
-	for (int i = 0; i < NUM_BULLETS; i++) {
+	for (int i = 0; i < NUM_PLAYER_BULLETS; i++) {
 		b[i]->hide();
+	}
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		b = this->enemies[i]->getBullets();
+		for (int j = 0; j < NUM_ENEMY_BULLETS; j++) {
+			b[j]->hide();
+		}
 	}
 }
 
@@ -58,8 +66,11 @@ void Game::start()
 		// HANDLE KEYPRESS
 		if ((c = getch()) != ERR)
 			this->handleKeyPress(c);
-		// ATTEMPT TO SPAWN ENEMY
+		// ATTEMPT TO SPAWN ENEMY / RESPAWN PLAYER
+		if (this->player.getDeathCount() == DEATHCOUNTER2)
+			this->player.show();
 		this->spawnEnemy();
+		this->chargeEnemies();
 		// UPDATE POSITIONS
 		this->moveEntities();
 		// DRAW
@@ -101,15 +112,19 @@ void Game::draw() {
 }
 
 void    Game::drawEntities() {
-	this->player.draw();
+	this->player.draw(PLAYERCOLOR);
 	this->player.drawBullets();
-	for (int i = 0; i < MAX_ENEMIES; i++)
+	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (enemies[i]->isDisplayed())
-			enemies[i]->draw();
+			enemies[i]->draw(ENEMYCOLOR);
+		if (enemies[i]->isShooting())
+			enemies[i]->drawBullets();
+	}
 }
 
 void    Game::moveEntities() {
 	Bullet** b = this->player.getBullets();
+	Bullet** e;
 	for (int j = 0; j < this->player.getNumBullets(); j++) {
 		if (b[j]->isDisplayed()) {
 			b[j]->moveForward();
@@ -117,16 +132,29 @@ void    Game::moveEntities() {
 		}
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if (enemies[i]->isDisplayed()) {
+		if (!enemies[i]->isDead() && enemies[i]->isDisplayed()) {
 			enemies[i]->move();
 			if (enemies[i]->isDisplayed() && enemies[i]->checkCollision(this->player))
 			{
-				this->player.decreaseLives();
+				this->player.dies();
 				if (this->player.getLives() == 0) {
 					this->gameOver();
 					return;
 				}
-				enemies[i]->hide();
+				enemies[i]->dies();
+			}
+		}
+		if (enemies[i]->isShooting()) {
+			e = enemies[i]->getBullets();
+			for (int k = 0; k < enemies[i]->getNumBullets(); k++) {
+				e[k]->moveForward();
+				if (e[k]->checkCollision(this->player)) {
+					this->player.dies();
+					if (this->player.getLives() == 0 ){
+						this->gameOver();
+						return;
+					}
+				}
 			}
 		}
 	}
@@ -140,7 +168,7 @@ void    Game::moveEntities() {
 void	Game::checkBulletCollision(Bullet & b) {
 	for (int k = 0; k < MAX_ENEMIES; k++) {
 		if (enemies[k]->checkCollision(b)) {
-			enemies[k]->hide();
+			enemies[k]->dies();
 			this->score++;
 			b.hide();
 		}
@@ -150,25 +178,37 @@ void	Game::checkBulletCollision(Bullet & b) {
 void    Game::handleKeyPress(int c) {
 	switch(c) {
 		case KEY_LEFT:
-			this->player.moveLeft();
-			this->checkEnemyCollision();
+			if (!player.isDead()) {
+				this->player.moveLeft();
+				this->checkEnemyCollision();
+			}
 			break;
 		case KEY_RIGHT:
-			this->player.moveRight();
-			this->checkEnemyCollision();
+			if (!player.isDead()) {
+				this->player.moveRight();
+				this->checkEnemyCollision();
+			}
 			break;
 		case KEY_UP:
-			this->player.moveUp();
-			this->checkEnemyCollision();
+			if (!player.isDead()) {
+				this->player.moveUp();
+				this->checkEnemyCollision();
+			}
 			break;
 		case KEY_DOWN:
-			this->player.moveDown();
-			this->checkEnemyCollision();
+			if (!player.isDead()) {
+				this->player.moveDown();
+				this->checkEnemyCollision();
+			}	
 			break;
 		case ' ':
-			this->player.shoot(player.getRectangle());
+			if (!player.isDead())
+				this->player.shoot(player.getRectangle());
 			break;
-		case 27: // exit on 'esc' for now
+		// case 27: esc key has 1 sec lag
+		// 	this->gameOver();
+		// 	break;
+		case '`':
 			this->gameOver();
 			break;
 	}
@@ -179,10 +219,10 @@ void	Game::checkEnemyCollision() {
 	{
 		if (this->enemies[i]->isDisplayed() && this->enemies[i]->checkCollision(this->player))
 		{
-			this->player.decreaseLives();
+			this->player.dies();
 			if (this->player.getLives() == 0)
 				this->gameOver();
-			enemies[i]->hide();
+			enemies[i]->dies();
 		}
 	}
 }
@@ -223,6 +263,11 @@ Game&	Game::operator=(Game const & rhs)
 	this->fps = rhs.getFPS();
 	this->player = rhs.getPlayer();
 	this->enemies = rhs.getEnemies();
+	this->restart = rhs.restart;
+	this->time = rhs.time;
+	this->spawnTimer = rhs.spawnTimer;
+	this->spawnTime = rhs.spawnTime;
+	this->score = rhs.score;
 	return (*this);
 }
 
@@ -232,23 +277,36 @@ void	Game::spawnEnemy() {
 	if (this->spawnTime == this->spawnTimer) {
 		this->spawnTimer = 0;
 		this->spawnTime = rand() % 4 + 1;
-		while (this->enemies[i]->isDisplayed())
+		while (this->enemies[i]->isDisplayed() && !this->enemies[i]->isDead())
 			i++;
 		this->enemies[i]->show();
 	}
 }
 
+void	Game::chargeEnemies() {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (this->enemies[i]->isDisplayed()){
+			this->enemies[i]->chargeShot();
+		}
+	}
+}
+
 void	Game::gameOver() {
 	bool	paused = true;
-	int		centerX = this->cols / 2;
-	int		centerY = this->rows / 2;
+	int		centerX;
+	int		centerY;
 	int		c;
 
 	while (paused) {
 		clear();
+		getmaxyx(stdscr, this->rows, this->cols);
+		centerX = this->cols / 2;
+		centerY = this->rows / 2;
 		box(stdscr, '*', '*');
 		mvprintw(centerY - 5, centerX - 5, "GAME  OVER");
-		mvprintw(centerY, centerX - 5, "Try Again?");
+		mvprintw(centerY - 2, centerX - 5, "SCORE: %d", this->score);
+		mvprintw(centerY, centerX - 12, "TIME ELAPSED: %.2d:%.2d", this->time / 60, this->time%60);
+		mvprintw(centerY + 3, centerX - 5, "Try Again?");
 		mvprintw(centerY + 5, centerX - 19, "[1] Yes                       [2] Exit");
 		if ((c = getch()) != ERR) {
 			switch (c) {

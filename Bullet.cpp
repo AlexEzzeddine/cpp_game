@@ -83,5 +83,8 @@ void Bullet::setBoundingRectangle(Rectangle rectangle)
 Bullet&		Bullet::operator=(Bullet const & b)
 {
 	(Entity&)(*this) = (Entity&)b;
+	this->display = b.display;
+	this->deathCounter = b.deathCounter;
+	this->dead = b.dead;
 	return (*this);
 }

@@ -8,9 +8,12 @@ class Character
 {
 	private:
 		Bullet **bullets;
+		Character();
+		
+	protected:
 		int lives;
 		int numberOfBullets;
-		Character();
+
 	public:
 		Character(int lives, int numberOfBullets, Rectangle& rectangle, Bullet::Direction direction);
 		Character(Character const & c);
@@ -26,8 +29,8 @@ class Character
 		void setLives(int n);
 		void decreaseLives();
 		void increaseLives();
+		bool isShooting();
 		
-
 		Character&	operator=(Character const & c);
 };
 
