@@ -5,6 +5,11 @@ Character::Character()
 	return;
 }
 
+Character::Character(Character const & c)
+{
+	*this = c;
+}
+
 Character::~Character()
 {
 	for(int i = 0; i < numberOfBullets; i++)
@@ -48,4 +53,21 @@ void Character::drawBullets()
 	for (int i = 0; i < numberOfBullets; i++)
 		if (bullets[i]->isDisplayed())
 			bullets[i]->draw();
+}
+
+Bullet**	Character::getBullets() const
+{
+	return (this->bullets);
+}
+
+int			Character::getNumBullets() const
+{
+	return (this->numberOfBullets);
+}
+
+Character&	Character::operator=(Character const & c)
+{
+	this->bullets = c.getBullets();
+	this->numberOfBullets = c.getNumBullets();
+	return (*this);
 }

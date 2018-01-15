@@ -8,6 +8,16 @@ Enemy::Enemy():
 	return;
 }
 
+Enemy::Enemy(Enemy const & e) : Entity(e), Character(e)
+{
+	*this = e;
+}
+
+Enemy::~Enemy()
+{
+	return;
+}
+
 Point Enemy::getStartPos()
 {
 	int rows, cols;
@@ -16,6 +26,11 @@ Point Enemy::getStartPos()
 	int y = rand() % rows;
 	Point pos(x, y);
 	return pos;
+}
+
+Rectangle	Enemy::getBoundingRectangle() const
+{
+	return (this->boundingRectangle);
 }
 
 void Enemy::setBoundingRectangle(Rectangle rectangle)
@@ -27,9 +42,9 @@ void Enemy::move()
 {
 	Enemy::Direction direction = (Direction)(rand() % 4);
 	if (direction == up)
-		moveLeft();
+		moveUp();
 	else if (direction == down)
-		moveLeft();
+		moveDown();
 	else
 		moveLeft();
 }
@@ -56,4 +71,12 @@ void Enemy::moveLeft()
 		Entity::moveLeft();
 	else
 		pos = Enemy::getStartPos();
+}
+
+Enemy&	Enemy::operator=(Enemy const & e)
+{
+	this->boundingRectangle = e.getBoundingRectangle();
+	this->pos = e.getPos();
+	this->display = e.display;
+	return (*this);
 }

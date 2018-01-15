@@ -10,15 +10,17 @@ class Player : public Entity, public Character
 		static Rectangle boundingRectangle;
 	public:
 		Player();
+		Player(Player const & p);
+		~Player();
 
 		void moveUp();
 		void moveRight();
 		void moveDown();
 		void moveLeft();
 		static Point getStartPos();
+		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
-
-
+		Player&	operator=(Player const & p);
 };
 
 #endif

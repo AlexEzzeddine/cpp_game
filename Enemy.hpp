@@ -13,11 +13,15 @@ class Enemy : public Entity, public Character
 	public:
 		enum Direction {left, right, up, down};
 		Enemy();
+		Enemy(Enemy const & e);
+		Enemy& operator=(Enemy const & e);
+		~Enemy();
 		void move();
 		void moveUp();
 		void moveDown();
 		void moveLeft();
 		static Point getStartPos();
+		Rectangle	getBoundingRectangle() const;
 		static void setBoundingRectangle(Rectangle rectangle);
 		void destroy();
 

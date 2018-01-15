@@ -15,8 +15,8 @@ class Entity
 	public:
 		Entity(Entity const& entity);
 		Entity(Point const pos, char const symbol, bool display);
-
 		Entity& operator=(Entity const& entity);
+		~Entity();
 
 		void move(int x, int y); // moves Entity to absolute position on the screen
 		void move(Point const& point); // moves Entity to absolute position on the screen

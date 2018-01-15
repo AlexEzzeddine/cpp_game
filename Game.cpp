@@ -111,3 +111,42 @@ void    Game::handleKeyPress(int c) {
 	}
 
 }
+
+WINDOW*	Game::getWin() const {
+	return (this->win);
+}
+
+bool	Game::getFinished() const {
+	return (this->finished);
+}
+
+int		Game::getCols() const {
+	return (this->cols);
+}
+
+int		Game::getRows() const {
+	return (this->rows);
+}
+
+int		Game::getFPS() const {
+	return (this->fps);
+}
+
+Player	Game::getPlayer() const {
+	return (this->player);
+}
+Enemy**	Game::getEnemies() const {
+	return (this->enemies);
+}
+
+Game&	Game::operator=(Game const & rhs)
+{
+	this->win = rhs.getWin();
+	this->finished = rhs.getFinished();
+	this->cols = rhs.getCols();
+	this->rows = rhs.getRows();
+	this->fps = rhs.getFPS();
+	this->player = rhs.getPlayer();
+	this->enemies = rhs.getEnemies();
+	return (*this);
+}
