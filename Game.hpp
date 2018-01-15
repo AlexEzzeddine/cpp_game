@@ -1,23 +1,32 @@
 #ifndef GAME_HPP
 #define GAME_HPP
+
 #include <ncurses.h>
 #include <ctime>
 #include <cstdlib>
 #include <string>
-#define FRAMES_PER_SECOND 60
+
+#include "Player.hpp"
+#include "Enemy.hpp"
+
+#define FRAMES_PER_SECOND 30
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAMES_PER_SECOND)
 #define MAX_ENEMIES 10
 
 class Game
 {
     private:
-        WINDOW*     _win;
-        bool        _finished;
-        int         _maxHei;
-        int         _maxWid;
-        int         _fps;
-        // Player       _p1;
-        // Enemy        _enemies[MAX_ENEMIES];
+        WINDOW*     win;
+        bool        finished;
+        int         cols;
+        int         rows;
+        int         fps;
+        Player      player;
+        Enemy       **enemies;
+        int         time;
+        int         timer;
+        int         spawnTimer;
+        int         spawnTime;
 
     public:
         Game();
@@ -28,9 +37,12 @@ class Game
         void    handleInput(char c);
         void    drawEntities();
         void    moveEntities();
-        void    startLoop();
+        void    start();
         void    draw();
         void    handleKeyPress(int c);
+        void    checkEnemyCollision();
+        void    checkBulletCollision(Bullet & b);
+        void    spawnEnemy();
 };
 
 #endif
