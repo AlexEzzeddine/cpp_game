@@ -36,8 +36,6 @@ void	Game::init() {
 	Player::setBoundingRectangle(Rectangle(1, 1, this->cols / 5, this->rows - 3));
 	Enemy::setBoundingRectangle(Rectangle(1, 1, this->cols - 2, this->rows - 3));
 
-	Rectangle newPlayerPosition = Player::getStartPos();
-	this->player.setRectangle(newPlayerPosition);
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		this->enemies[i]->hide();
 	}
